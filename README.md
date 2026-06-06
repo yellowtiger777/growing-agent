@@ -63,6 +63,44 @@ def run_bash(command: str, timeout: int = 120) -> str:
 - ✅ 输出截断：超长输出自动截断（5 万字）
 - ✅ 跨平台：Windows 下自动使用 Git Bash
 
+---
+
+## Day 1.1：改进版 — 更强的安全检查 + bash→cmd 自动适配
+
+**文件：** `1-c1-run-bash-release.py`
+
+在 Day 1 基础上的重大升级，核心改进：
+
+### 🔐 4 层安全检查
+
+| 层级 | 方式 | 说明 |
+|------|------|------|
+| 第 1 层 | 正则模式匹配 | 检测 rm -rf、sudo、curl\|bash 等 20+ 危险模式 |
+| 第 2 层 | 严格 token 匹配 | 精确匹配磁盘设备、格式化等危险操作 |
+| 第 3 层 | 净化后词根检查 | 去除特殊字符后查找危险词根，防编码绕过 |
+| 第 4 层 | 长度限制 | 拒绝超长命令（>2000 字符），防混淆攻击 |
+
+### 🔄 bash→cmd 自动翻译
+
+当 Windows 上没有安装 bash（Git Bash/WSL）时，自动将常见 bash 命令翻译为 cmd 命令：
+
+| bash 命令 | → | cmd 命令 |
+|-----------|---|----------|
+| `cat file` | → | `type file` |
+| `ls` | → | `dir` |
+| `grep` | → | `findstr` |
+| `cp src dst` | → | `copy src dst` |
+| `rm file` | → | `del file` |
+| `rm -rf dir` | → | `rmdir /s /q dir` |
+| `pwd` | → | `echo %cd%` |
+| `$VAR` | → | `%VAR%` |
+
+### 🧠 平台自适应
+
+- Linux/macOS：直接使用 bash 执行
+- Windows + 有 bash：使用 Git Bash/WSL 执行
+- Windows + 无 bash：自动翻译后使用 cmd.exe 执行
+
 ## 快速运行
 
 ```bash
