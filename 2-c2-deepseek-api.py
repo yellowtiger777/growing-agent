@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """
+你要自行到deepseek的网站 https://www.deepseek.com/  api开放平台去注册一个账号，获得api key，然后填写到你这个程序所在文件夹
+的.env文件里。程序才能顺利运行。
 这个项目会一直使用deepseek api。后面的程序会教你使用cc switch，接上各种大模型的api
 调用 DeepSeek API 实现一次对话
 这是调用deepseek的  api，实现一次对话，我们看看deepseek返回给我们的json数据，是什么样子的。有哪些组成部分。
