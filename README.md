@@ -17,7 +17,8 @@ Agent 的实质是能对文件、系统进行操作，而最重要的能力之�
 | 阶段 | 版本 | 内容 | 状态 |
 |------|------|------|------|
 | **基础** | Day 1 | 🔥 最简 Agent — 安全 bash 执行器 | ✅ **已发布** |
-| | Day 2 | 接入 DeepSeek API | ⏳ 即将发布 |
+| | Day 1.1 | 改进版 — 更强安全检查 + bash→cmd 翻译 | ✅ **已发布** |
+| | Day 2 | 🔥 调用 DeepSeek API — 一次对话 + 数据结构 | ✅ **已发布** |
 | | Day 3 | API 改进与优化 | ⏳ |
 | | Day 4 | 引入函数调用 (Tool Calling) | ⏳ |
 | **工具** | Day 5 | 多工具并行执行 | ⏳ |
@@ -101,11 +102,71 @@ def run_bash(command: str, timeout: int = 120) -> str:
 - Windows + 有 bash：使用 Git Bash/WSL 执行
 - Windows + 无 bash：自动翻译后使用 cmd.exe 执行
 
+---
+
+## Day 2：调用 DeepSeek API — 一次对话 + 数据结构
+
+**文件：** `2-c2-deepseek-api.py`
+
+从 DeepSeek API 官方实现一次完整对话，核心目标是 **看懂大模型返回的数据结构**。
+
+### 参数全覆盖
+
+```python
+response = client.chat.completions.create(
+    model="deepseek-v4-flash",
+    messages=[...],
+    max_completion_tokens=1024,   # 最大输出 token
+    temperature=0.7,              # 随机性
+    top_p=0.9,                    # 核采样
+    seed=42,                      # 固定随机种子（可复现）
+    tools=None,                   # 工具定义列表 ← 未来重点
+    tool_choice="auto",           # 工具选择策略
+    stream=False,                 # 流式输出
+)
+```
+
+### 返回数据结构一览
+
+运行后会打印 DeepSeek 返回的**完整 JSON**，让你直观看到：
+
+```json
+{
+  "id": "chatcmpl-xxx",
+  "choices": [{
+    "index": 0,
+    "message": {
+      "role": "assistant",
+      "content": "你好！有什么可以帮助你的？"
+    },
+    "finish_reason": "stop"
+  }],
+  "usage": {
+    "completion_tokens": ...,
+    "prompt_tokens": ...,
+    "total_tokens": ...
+  },
+  ...
+}
+```
+
+> 💡 重点关注参数 `tools` — 后续所有 Agent 工具调用的基础就是从这里传给大模型的。
+
+### 运行方式
+
+```bash
+python 2-c2-deepseek-api.py
+# 然后输入你的问题，看看返回的数据长什么样
+```
+
 ## 快速运行
 
 ```bash
 # 运行 Day 1 版本
 python 1-c1-demo-run-bash.py
+
+# 运行 Day 2 版本（需要先配置 .env 中的 API Key）
+python 2-c2-deepseek-api.py
 ```
 
 ## 如何跟进
