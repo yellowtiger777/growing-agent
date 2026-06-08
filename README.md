@@ -19,8 +19,8 @@ Agent 的实质是能对文件、系统进行操作，而最重要的能力之�
 | **基础** | Day 1 | 🔥 最简 Agent — 安全 bash 执行器 | ✅ **已发布** |
 | | Day 1.1 | 改进版 — 更强安全检查 + bash→cmd 翻译 | ✅ **已发布** |
 | | Day 2 | 🔥 调用 DeepSeek API — 一次对话 + 数据结构 | ✅ **已发布** |
-| | Day 3 | API 改进与优化 | ⏳ |
-| | Day 4 | 引入函数调用 (Tool Calling) | ⏳ |
+| | Day 3 | 🔥 引入函数调用 (Tool Calling) — 对应文件 `3-c3-deepseek-tool.py` | ✅ **已发布** |
+| | Day 4 | API 改进与优化 | ⏳ |
 | **工具** | Day 5 | 多工具并行执行 | ⏳ |
 | | Day 6 | 输入循环 + 交互工作流 | ⏳ |
 | | Day 7~9 | 新增 grep / edit / webfetch 工具 | ⏳ |
