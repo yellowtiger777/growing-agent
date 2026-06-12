@@ -157,6 +157,69 @@ python 2-c2-deepseek-api.py
 # 然后输入你的问题，看看返回的数据长什么样
 ```
 
+---
+
+## Day 10~12：搜索 API 集成
+
+**文件：** `6-deepseek-search-api.py`
+
+在 Agent 中集成**博查搜索 (Bocha AI)** 的 Web 搜索 API，让 Agent 具备联网搜索能力。
+
+### 🔍 新增工具：`search_api`
+
+| 属性 | 说明 |
+|------|------|
+| 工具名 | `search_api` |
+| 功能 | 对输入的自然语言查询进行网页搜索 |
+| 底层 API | [博查搜索 open.bochaai.com](https://open.bochaai.com/) |
+| 返回内容 | 标题、来源、链接、日期、摘要等结构化数据 |
+| 默认数量 | 10 条，最大 20 条 |
+
+### 🛠 使用步骤
+
+1. **注册博查 API Key**  
+   访问 [https://open.bochaai.com/](https://open.bochaai.com/) 注册并获取 API Key。
+
+2. **创建 `search-api.py` 文件**  
+   在项目根目录创建 `search-api.py`，实现 `search(query, count)` 函数，调用博查搜索 API。
+
+3. **运行 Agent**
+   ```bash
+   python 6-deepseek-search-api.py
+   ```
+   Agent 会在需要联网搜索时自动调用 `search_api` 工具。
+
+### 📦 本文件包含的完整工具集
+
+| 工具 | 功能 | 来源 |
+|------|------|------|
+| `bash` | 执行 shell 命令 | Day 1 |
+| `weather` | 查询天气 | - |
+| `read_file` | 读取文件 | - |
+| `write_file` | 写入文件 | - |
+| `edit` | 精确文本替换（类似 Claude Code） | Day 7~9 |
+| `grep` | 代码搜索（ripgrep） | Day 7~9 |
+| `webfetch` | 抓取网页内容 | Day 7~9 |
+| **`search_api`** | **博查 Web 搜索** | **Day 10~12 ✨** |
+
+### 运行方式
+
+```bash
+# 1. 安装依赖
+pip install openai python-dotenv requests
+
+# 2. 配置 .env
+# DEEPSEEK_API_KEY=sk-xxx
+# DEEPSEEK_BASE_URL=https://api.deepseek.com
+# BOCHA_API_KEY=sk-xxx
+
+# 3. 运行
+python 6-deepseek-search-api.py
+# 输入"搜索最近AI领域的新闻"，Agent 会自动调用 search_api 联网搜索
+```
+
+---
+
 ## 快速运行
 
 ```bash
